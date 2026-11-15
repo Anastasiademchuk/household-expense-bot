@@ -24,6 +24,14 @@ export default async function handler(req, res) {
       error: "Bot not configured"
     });
   }
+  
+if (!allowedUsers.includes(userId)) {
+  console.warn("Telegram user not authorized", {
+    userId: userId,
+    allowedUserCount: allowedUsers.length
+  });
+  return res.status(200).json({ ok: true });
+}
 
   if (req.headers["x-telegram-bot-api-secret-token"] !== secret) {
     return res.status(403).json({ error: "Forbidden" });
