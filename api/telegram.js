@@ -13,10 +13,12 @@ export default async function handler(req, res) {
     .map((id) => id.trim())
     .filter(Boolean);
 
-  if (!token || !secret || allowedUsers.length === 0) {
-    console.error("Missing Telegram configuration");
-    return res.status(503).json({ error: "Bot not configured" });
-  }
+if (!token || !secret || allowedUsers.length === 0) {
+  console.error("Missing Telegram configuration", {
+    tokenPresent: Boolean(token),
+    secretPresent: Boolean(secret),
+    allowedUsersConfigured: allowedUsers.length > 0
+  });
 
   if (req.headers["x-telegram-bot-api-secret-token"] !== secret) {
     return res.status(403).json({ error: "Forbidden" });
